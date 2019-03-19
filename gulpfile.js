@@ -4,7 +4,9 @@ var gulpConcat = require('gulp-concat');
 var gulpUglify = require('gulp-uglify');
 var gulpHtmlmin = require('gulp-htmlmin');
 var gulpConnect = require('gulp-connect');
+var clean = require('gulp-clean');  
 var gulpSequence = require('gulp-sequence');
+var sass = require('gulp-sass');
 
 gulp.task('minify-css', function() {
   gulp.src('./src/index.css')
@@ -99,3 +101,16 @@ gulp.task('clean', function() {
 });
 
 gulp.task('build', gulpSequence('clean', 'minify-css', 'minify-js', 'minify-html'));
+
+
+sass.compiler = require('node-sass');
+gulp.task('sass', function () {
+ return gulp.src('sass/**/*.scss')
+ .pipe(sass().on('error', sass.logError))
+ .pipe(gulp.dest('dist'));
+
+
+  gulp.task('sass:watch', function() {
+ gulp.watch('./sass/**/*.scss', ['sass']);
+});
+  });
